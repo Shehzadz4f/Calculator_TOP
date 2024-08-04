@@ -5,6 +5,7 @@ let previousButton;
 let plusMinus = false;
 let operatorButtonEngaged = false;
 let previousElement;
+// let backspaceToggle = false;
 
 function operate(n1, n2, op) {
   switch(op) {
@@ -59,6 +60,8 @@ numberButtons.forEach((button) => {
     operatorButtonEngaged = false;
     previousElement.classList.remove('operator-button-engaged');
     }
+    
+    resetButton.textContent = 'C';
     getDisplayNumber(event);
   });
 });
@@ -126,11 +129,23 @@ resetButton.addEventListener('click', () => {
     operatorButtonEngaged = false;
     previousElement.classList.remove('operator-button-engaged');
   }
-  display.textContent = 0;
-  previousButton = undefined;
-  num1 = '';
-  num2 = '';
-  operatorSelected = '';
+  if (resetButton.textContent === 'C' && display.textContent != 0) {
+    if (display.textContent.length === 1) {
+      display.textContent = 0;
+      return;
+    }
+    let modifyDisplay = display.textContent;
+    let modifiedDisplayArr = modifyDisplay.split('');
+    modifiedDisplayArr.pop();
+    display.textContent = modifiedDisplayArr.join('');
+  } else if (resetButton.textContent === 'C' && display.textContent == 0) {
+    resetButton.textContent = 'AC';
+    display.textContent = 0;
+    previousButton = undefined;
+    num1 = '';
+    num2 = '';
+    operatorSelected = '';
+  }
 });
 
 percentageButton.addEventListener('click', () => {
@@ -146,6 +161,7 @@ equalsToButton.addEventListener('click', () => {
   console.log('num1',num1);
   console.log('num2',num2);
   console.log('operatorSelected',operatorSelected);
+  
   if (num1 === '' && num2 === 0) {
     display.textContent = 0;
   } else {
