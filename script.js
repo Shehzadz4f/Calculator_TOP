@@ -85,6 +85,7 @@ numberButtons.forEach((button) => {
 
 operatorButtons.forEach((button) => {
   button.addEventListener('click', (event) => {
+    //For css
     if (!operatorButtonEngaged) {
       operatorButtonEngaged = true;
       button.classList.add('operator-button-engaged');
@@ -92,7 +93,7 @@ operatorButtons.forEach((button) => {
       previousElement.classList.remove('operator-button-engaged');
       button.classList.add('operator-button-engaged');
     }
-
+    //Assign num1 and/or num2 values
     if (display.textContent == 0 && button.textContent === '-') {
       plusMinus = true;
       num1 = 0;
@@ -103,13 +104,14 @@ operatorButtons.forEach((button) => {
     }
 
     if (num2 !== '') {
-      if (Number(previousButton)) {
+      if (!isNaN(Number(previousButton))) {
         num1 = operate(num1, num2, operatorSelected);
         display.textContent = num1;
       }
     }
 
     operatorSelected = button.textContent;
+
     if (operatorSelected === '%') {
       num1 = operate(num1, num2, operatorSelected);
       display.textContent = num1;
@@ -171,6 +173,8 @@ equalsToButton.addEventListener('click', () => {
   } else if (num1 === '' && num2 !== 0) {
     display.textContent = num2;
   } else {
-    display.textContent = operate(num1, num2, operatorSelected);
+    num1 = operate(num1, num2, operatorSelected);
+    display.textContent = num1;
+    num2 = '';
   }
 });
