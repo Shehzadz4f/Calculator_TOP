@@ -72,7 +72,6 @@ operatorButtons.forEach((button) => {
       operatorButtonEngaged = true;
       button.classList.add('operator-button-engaged');
     } else if (isNaN(Number(previousButton))) {
-      console.log('else if triggered');
       previousElement.classList.remove('operator-button-engaged');
       button.classList.add('operator-button-engaged');
     }
@@ -82,18 +81,14 @@ operatorButtons.forEach((button) => {
       num1 = 0;
     } else if (num1 === '') {
       num1 = Number(display.textContent);
-      console.log('num1', num1);
-
     } else if(num1 !== '') {
       num2 = Number(display.textContent);
-      console.log('num2', num2);
     }
 
     if (num2 !== '') {
       if (Number(previousButton)) {
         num1 = operate(num1, num2, operatorSelected);
         display.textContent = num1;
-        console.log('new num1', num1);
       }
     }
 
@@ -102,9 +97,7 @@ operatorButtons.forEach((button) => {
       num1 = operate(num1, num2, operatorSelected);
       display.textContent = num1;
     }
-    console.log('operatorSelected',operatorSelected);
     previousButton = button.textContent;    
-    console.log (previousButton);
     previousElement = event.target;
     });
   });
@@ -119,7 +112,6 @@ plusMinusButton.addEventListener('click', () => {
       .split('')
       .toSpliced(0,1)
       .join('');
-    console.log (display.textContent)
     plusMinus = false; 
   }
 });
@@ -149,7 +141,6 @@ resetButton.addEventListener('click', () => {
 });
 
 percentageButton.addEventListener('click', () => {
-  console.log('event triggered');
   num1 = Number(display.textContent);
   operatorSelected = percentageButton.textContent;
   num1 = operate(num1, num2, operatorSelected);
@@ -158,12 +149,10 @@ percentageButton.addEventListener('click', () => {
 
 equalsToButton.addEventListener('click', () => {
   num2 = Number(display.textContent); 
-  console.log('num1',num1);
-  console.log('num2',num2);
-  console.log('operatorSelected',operatorSelected);
-  
   if (num1 === '' && num2 === 0) {
     display.textContent = 0;
+  } else if (num1 === '' && num2 !== 0) {
+    display.textContent = num2;
   } else {
     display.textContent = operate(num1, num2, operatorSelected);
   }
