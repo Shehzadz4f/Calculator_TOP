@@ -5,7 +5,15 @@ let previousButton;
 let plusMinus = false;
 let operatorButtonEngaged = false;
 let previousElement;
-// let backspaceToggle = false;
+
+const display = document.querySelector('.js-display');
+display.textContent = '0';
+const numberButtons = document.querySelectorAll('.js-number-buttons');
+const operatorButtons = document.querySelectorAll('.js-operator-buttons');
+const resetButton = document.querySelector('.js-reset-button');
+const equalsToButton = document.querySelector('.js-equals-to-button');
+const plusMinusButton = document.querySelector('.js-plus-minus-button');
+const percentageButton = document.querySelector('.js-percentage-button');
 
 function operate(n1, n2, op) {
   switch(op) {
@@ -34,7 +42,7 @@ function getDisplayNumber(event) {
     display.textContent = event.target.textContent;
     previousButton = Number(event.target.textContent);
 
-  } else if((display.textContent != 0 && typeof previousButton === 'number') || display.textContent === '-') {
+  } else if(display.textContent != 0 && typeof previousButton === 'number') {
     display.textContent += event.target.textContent;
     previousButton = Number(event.target.textContent);
 
@@ -45,14 +53,16 @@ function getDisplayNumber(event) {
   }
 }
 
-const display = document.querySelector('.js-display');
-display.textContent = '0';
-const numberButtons = document.querySelectorAll('.js-number-buttons');
-const operatorButtons = document.querySelectorAll('.js-operator-buttons');
-const resetButton = document.querySelector('.js-reset-button');
-const equalsToButton = document.querySelector('.js-equals-to-button');
-const plusMinusButton = document.querySelector('.js-plus-minus-button');
-const percentageButton = document.querySelector('.js-percentage-button');
+function getDisplayNumberStrict (event) {
+  if(typeof previousButton === 'number' && event.target.textContent !== '.') {
+    display.textContent += event.target.textContent;
+    previousButton = Number(event.target.textContent);
+  } else if(typeof previousButton === 'string' && event.target.textContent !== '.') {
+    display.textContent = '';
+    display.textContent += event.target.textContent;
+    previousButton = Number(event.target.textContent);
+  }
+}
 
 numberButtons.forEach((button) => {
   button.addEventListener('click', (event) => {
@@ -60,9 +70,12 @@ numberButtons.forEach((button) => {
     operatorButtonEngaged = false;
     previousElement.classList.remove('operator-button-engaged');
     }
-    
     resetButton.textContent = 'C';
-    getDisplayNumber(event);
+    if(!display.textContent.includes('.')) {
+      getDisplayNumber(event);
+    } else {
+      getDisplayNumberStrict(event);
+    }
   });
 });
 
