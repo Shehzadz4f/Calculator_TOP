@@ -15,7 +15,10 @@ function operate(n1, n2, op) {
       return Number(n1) * Number(n2);
 
     case '/':
-      return Number(n1) / Number(n2);
+      if (n2 === 0) {
+        return 'Error'
+      } else
+        return Number(n1) / Number(n2);
 
     case '%':
       return Number(n1) / 100;
@@ -55,24 +58,21 @@ operatorButtons.forEach((button) => {
     button.addEventListener('click', () => {
       if (display.textContent == 0 && button.textContent === '-') {
         display.textContent = '-';
-      }
-      if (typeof Number(num1) !== 'number') {
+      } else if (num1 === '') {
         num1 = Number(display.textContent);
-        console.log('Typeof num1', typeof num1);
         console.log('num1', num1);
   
-      } else if(typeof Number(num1) === 'number') {
+      } else if(num1 !== '') {
         num2 = Number(display.textContent);
-        console.log('Typeof num2',typeof num2);
         console.log('num2', num2);
       }
-      operatorSelected = button.textContent;
-      console.log('operatorSelected',operatorSelected);
-      if (typeof Number(num2) === 'number') {
+      if (num2 !== '' ) {
         num1 = operate(num1, num2, operatorSelected);
         display.textContent = num1;
         console.log('new num1', num1);
       }
+      operatorSelected = button.textContent;
+      console.log('operatorSelected',operatorSelected);
       previousButton = button.textContent;    
     });
   });
