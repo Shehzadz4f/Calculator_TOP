@@ -53,7 +53,6 @@ const equalsToButton = document.querySelector('.js-equals-to-button');
 const plusMinusButton = document.querySelector('.js-plus-minus-button');
 const percentageButton = document.querySelector('.js-percentage-button');
 
-
 numberButtons.forEach((button) => {
   button.addEventListener('click', (event) => {
     if (operatorButtonEngaged) {
@@ -77,6 +76,7 @@ operatorButtons.forEach((button) => {
 
     if (display.textContent == 0 && button.textContent === '-') {
       plusMinus = true;
+      num1 = 0;
     } else if (num1 === '') {
       num1 = Number(display.textContent);
       console.log('num1', num1);
@@ -92,8 +92,8 @@ operatorButtons.forEach((button) => {
         display.textContent = num1;
         console.log('new num1', num1);
       }
-      
     }
+
     operatorSelected = button.textContent;
     if (operatorSelected === '%') {
       num1 = operate(num1, num2, operatorSelected);
@@ -146,5 +146,9 @@ equalsToButton.addEventListener('click', () => {
   console.log('num1',num1);
   console.log('num2',num2);
   console.log('operatorSelected',operatorSelected);
-  display.textContent = operate(num1, num2, operatorSelected);
+  if (num1 === '' && num2 === 0) {
+    display.textContent = 0;
+  } else {
+    display.textContent = operate(num1, num2, operatorSelected);
+  }
 });
