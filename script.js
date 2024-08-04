@@ -18,13 +18,23 @@ const percentageButton = document.querySelector('.js-percentage-button');
 function operate(n1, n2, op) {
   switch(op) {
     case '+':
-      return Math.round((Number(n1) + Number(n2)) * 100000000) / 100000000;
+      let resultAdd = Math.round((Number(n1) + Number(n2)) * 100000000) / 100000000;
+      if (result.toString().length > 9) {
+        return resultAdd.toExponential(5);
+      } else {
+        return resultAdd;
+      }
 
     case '-':
       return Math.round((Number(n1) - Number(n2)) * 100000000) / 100000000;
 
     case '*':
-      return Math.round((Number(n1) * Number(n2)) * 100000000) / 100000000;
+      let resultMul = Math.round((Number(n1) * Number(n2)) * 100000000) / 100000000;
+      if (result.toString().length > 9) {
+        return resultMul.toExponential(5);
+      } else {
+        return resultMul;
+      }
 
     case '/':
       if (n2 === 0) {
@@ -38,33 +48,29 @@ function operate(n1, n2, op) {
 }
 
 function getDisplayNumber(event) {
-  if (display.textContent.length < 9) {
-    if(display.textContent == 0) {
-      display.textContent = event.target.textContent;
-      previousButton = Number(event.target.textContent);
+  if(display.textContent == 0) {
+    display.textContent = event.target.textContent;
+    previousButton = Number(event.target.textContent);
 
-    } else if(display.textContent != 0 && typeof previousButton === 'number') {
-      display.textContent += event.target.textContent;
-      previousButton = Number(event.target.textContent);
+  } else if(display.textContent != 0 && typeof previousButton === 'number' && display.textContent.length < 9) {
+    display.textContent += event.target.textContent;
+    previousButton = Number(event.target.textContent);
 
-    } else if(display.textContent != 0 && typeof previousButton === 'string') {
-      display.textContent = '';
-      display.textContent += event.target.textContent;
-      previousButton = Number(event.target.textContent);
-    }
+  } else if(display.textContent != 0 && typeof previousButton === 'string') {
+    display.textContent = '';
+    display.textContent += event.target.textContent;
+    previousButton = Number(event.target.textContent);
   }
 }
 
 function getDisplayNumberStrict (event) {
-  if (display.textContent.length < 10) {
-    if(typeof previousButton === 'number' && event.target.textContent !== '.') {
-      display.textContent += event.target.textContent;
-      previousButton = Number(event.target.textContent);
-    } else if(typeof previousButton === 'string' && event.target.textContent !== '.') {
-      display.textContent = '';
-      display.textContent += event.target.textContent;
-      previousButton = Number(event.target.textContent);
-    }
+  if(typeof previousButton === 'number' && event.target.textContent !== '.' && display.textContent.length < 10) {
+    display.textContent += event.target.textContent;
+    previousButton = Number(event.target.textContent);
+  } else if(typeof previousButton === 'string' && event.target.textContent !== '.') {
+    display.textContent = '';
+    display.textContent += event.target.textContent;
+    previousButton = Number(event.target.textContent);
   }
 }
 
