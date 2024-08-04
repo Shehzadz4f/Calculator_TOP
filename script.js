@@ -69,10 +69,14 @@ operatorButtons.forEach((button) => {
         num2 = Number(display.textContent);
         console.log('num2', num2);
       }
+
       if (num2 !== '') {
-        num1 = operate(num1, num2, operatorSelected);
-        display.textContent = num1;
-        console.log('new num1', num1);
+        if (Number(previousButton)) {
+          num1 = operate(num1, num2, operatorSelected);
+          display.textContent = num1;
+          console.log('new num1', num1);
+        }
+        
       }
       operatorSelected = button.textContent;
       if (operatorSelected === '%') {
@@ -81,6 +85,7 @@ operatorButtons.forEach((button) => {
       }
       console.log('operatorSelected',operatorSelected);
       previousButton = button.textContent;    
+      console.log (previousButton);
     });
   });
 
