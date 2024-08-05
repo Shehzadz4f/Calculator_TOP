@@ -7,7 +7,7 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
-  font-size: 20px;
+  font-size: 40px;
 }
 
 .calculator-container {
@@ -20,28 +20,29 @@ body {
 }
 
 .display {
-  font-size: 25px;
+  font-size: 50px;
   font-weight: lighter;
-  margin-top: 50px;
+  margin-top: 90px;
   margin-bottom: 5px;
   display: flex;
   justify-content: flex-end;
   padding: 2px;
-  max-width: 132px;
+  max-width: auto;
+  /* border: 1px solid white; */
 }
 
 button {
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
   border: none;
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 30px;
   cursor: pointer;
 }
 
 #zero {
-  width: 65px;
+  width: 130px;
 }
 
 .first-row {
