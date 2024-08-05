@@ -19,7 +19,7 @@ function operate(n1, n2, op) {
   switch(op) {
     case '+':
       let resultAdd = Math.round((Number(n1) + Number(n2)) * 100000000) / 100000000;
-      if (result.toString().length > 9) {
+      if (resultAdd.toString().length > 9) {
         return resultAdd.toExponential(5);
       } else {
         return resultAdd;
@@ -30,7 +30,7 @@ function operate(n1, n2, op) {
 
     case '*':
       let resultMul = Math.round((Number(n1) * Number(n2)) * 100000000) / 100000000;
-      if (result.toString().length > 9) {
+      if (resultMul.toString().length > 9) {
         return resultMul.toExponential(5);
       } else {
         return resultMul;
