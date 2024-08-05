@@ -38,9 +38,10 @@ function operate(n1, n2, op) {
 
     case '/':
       if (n2 === 0) {
-        return 'Error'
-      } else
+        return 'Error';
+      } else {
       return Math.round((Number(n1) / Number(n2)) * 100000000) / 100000000;
+      }
 
     case '%':
       return Number(n1) / 100;
@@ -49,27 +50,42 @@ function operate(n1, n2, op) {
 
 function getDisplayNumber(event) {
   if(display.textContent == 0) {
-    display.textContent = event.target.textContent;
+    if (event.target.textContent !== '.') {
+      display.textContent = event.target.textContent;
+    } else {
+      display.textContent = '0';
+      display.textContent += event.target.textContent;
+    }
     previousButton = Number(event.target.textContent);
-
   } else if(display.textContent != 0 && typeof previousButton === 'number' && display.textContent.length < 9) {
     display.textContent += event.target.textContent;
     previousButton = Number(event.target.textContent);
-
   } else if(display.textContent != 0 && typeof previousButton === 'string') {
-    display.textContent = '';
-    display.textContent += event.target.textContent;
+    if (event.target.textContent !== '.') {
+      display.textContent = '';
+      display.textContent += event.target.textContent;
+    } else {
+      display.textContent = '0';
+      display.textContent += event.target.textContent;
+    }
     previousButton = Number(event.target.textContent);
   }
 }
 
 function getDisplayNumberStrict (event) {
-  if(typeof previousButton === 'number' && event.target.textContent !== '.' && display.textContent.length < 10) {
-    display.textContent += event.target.textContent;
-    previousButton = Number(event.target.textContent);
-  } else if(typeof previousButton === 'string' && event.target.textContent !== '.') {
-    display.textContent = '';
-    display.textContent += event.target.textContent;
+  if(typeof previousButton === 'number' 
+    && event.target.textContent !== '.' 
+    && display.textContent.length < 10) {
+      display.textContent += event.target.textContent;
+      previousButton = Number(event.target.textContent);
+  } else if(typeof previousButton === 'string') {
+    if (event.target.textContent !== '.') {
+      display.textContent = '';
+      display.textContent += event.target.textContent;
+    } else {
+      display.textContent = '0';
+      display.textContent += event.target.textContent;
+    }
     previousButton = Number(event.target.textContent);
   }
 }
@@ -117,7 +133,7 @@ operatorButtons.forEach((button) => {
     }
 
     operatorSelected = button.textContent;
-
+    //For percentage button
     if (operatorSelected === '%') {
       num1 = operate(num1, num2, operatorSelected);
       display.textContent = num1;
@@ -158,7 +174,7 @@ resetButton.addEventListener('click', () => {
   } else if (resetButton.textContent === 'C' && display.textContent == 0) {
     resetButton.textContent = 'AC';
     display.textContent = 0;
-    previousButton = undefined;
+    previousButton = '';
     num1 = '';
     num2 = '';
     operatorSelected = '';
@@ -174,6 +190,7 @@ percentageButton.addEventListener('click', () => {
 
 equalsToButton.addEventListener('click', () => {
   num2 = Number(display.textContent); 
+    console.log('num2= ',num2);
   if (num1 === '' && num2 === 0) {
     display.textContent = 0;
   } else if (num1 === '' && num2 !== 0) {
@@ -183,4 +200,5 @@ equalsToButton.addEventListener('click', () => {
     display.textContent = num1;
     num2 = '';
   }
+  previousButton = equalsToButton.textContent;
 });
