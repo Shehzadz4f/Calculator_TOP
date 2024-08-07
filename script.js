@@ -35,6 +35,14 @@ function operate(n1, n2, op) {
       } else {
         return resultMul;
       }
+    
+    case '*':
+    let resultMulKey = Math.round((Number(n1) * Number(n2)) * 100000000) / 100000000;
+    if (resultMulKey.toString().length > 9) {
+      return resultMulKey.toExponential(5);
+    } else {
+      return resultMulKey;
+    }
 
     case '÷':
       if (n2 === 0) {
@@ -43,8 +51,15 @@ function operate(n1, n2, op) {
       return Math.round((Number(n1) / Number(n2)) * 100000000) / 100000000;
       }
 
+    case '/':
+      if (n2 === 0) {
+        return 'Error';
+      } else {
+      return Math.round((Number(n1) / Number(n2)) * 100000000) / 100000000;
+      }
+
     case '%':
-      return Number(n1) / 100;
+      return Math.round((Number(n1) / 100) * 100000000) / 100000000;
   }
 }
 
