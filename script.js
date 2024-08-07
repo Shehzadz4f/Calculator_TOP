@@ -124,20 +124,14 @@ operatorButtons.forEach((button) => {
     } else if(num1 !== '') {
       num2 = Number(display.textContent);
     }
-
+    
     if (num2 !== '') {
       if (!isNaN(Number(previousButton))) {
         num1 = operate(num1, num2, operatorSelected);
         display.textContent = num1;
       }
     }
-
     operatorSelected = button.textContent;
-    //For percentage button
-    if (operatorSelected === '%') {
-      num1 = operate(num1, num2, operatorSelected);
-      display.textContent = num1;
-    }
     previousButton = button.textContent;    
     previousElement = event.target;
     });
@@ -190,7 +184,6 @@ percentageButton.addEventListener('click', () => {
 
 equalsToButton.addEventListener('click', () => {
   num2 = Number(display.textContent); 
-    console.log('num2= ',num2);
   if (num1 === '' && num2 === 0) {
     display.textContent = 0;
   } else if (num1 === '' && num2 !== 0) {
@@ -201,4 +194,205 @@ equalsToButton.addEventListener('click', () => {
     num2 = '';
   }
   previousButton = equalsToButton.textContent;
+});
+
+//Adding keyboard support
+//Number keys action
+document.addEventListener('keydown', (event) => {
+  if (operatorButtonEngaged) {
+    operatorButtonEngaged = false;
+    previousElement.classList.remove('operator-button-engaged');
+    }
+    resetButton.textContent = 'C';
+    if(!display.textContent.includes('.')) {
+      getDisplayNumberKeyboard(event);
+    } else {
+      getDisplayNumberKeyboardStrict(event);
+    }
+  });
+
+const numericElements = '1234567890.';
+
+function getDisplayNumberKeyboard(event) {
+  if(display.textContent == 0 
+    && numericElements.includes(event.key)) {
+    if (event.key !== '.') {
+      display.textContent = event.key;
+    } else {
+      display.textContent = '0';
+      display.textContent += event.key;
+    }
+    previousButton = Number(event.key);
+  } else if(display.textContent != 0 
+    && typeof previousButton === 'number' 
+    && display.textContent.length < 9 
+    && numericElements.includes(event.key)) {
+      display.textContent += event.key;
+      previousButton = Number(event.key);
+  } else if(display.textContent != 0 
+    && typeof previousButton === 'string' 
+    && numericElements.includes(event.key)) {
+    if (event.key !== '.') {
+      display.textContent = '';
+      display.textContent += event.key;
+    } else {
+      display.textContent = '0';
+      display.textContent += event.key;
+    }
+    previousButton = Number(event.key);
+  }
+}
+
+function getDisplayNumberKeyboardStrict (event) {
+  if(typeof previousButton === 'number' 
+    && event.key !== '.' 
+    && display.textContent.length < 10
+    && numericElements.includes(event.key)) {
+      display.textContent += event.key;
+      previousButton = Number(event.key);
+  } else if(typeof previousButton === 'string'
+    && numericElements.includes(event.key)
+  ) {
+    if (event.key !== '.') {
+      display.textContent = '';
+      display.textContent += event.key;
+    } else {
+      display.textContent = '0';
+      display.textContent += event.key;
+    }
+    previousButton = Number(event.key);
+  }
+}
+
+const addKey = document.querySelector('#NumpadAdd');
+const subtractKey = document.querySelector('#NumpadSubtract');
+const multiplyKey = document.querySelector('#NumpadMultiply');
+const divideKey = document.querySelector('#NumpadDivide');
+const equalKey = document.querySelector('#NumpadEnter');
+
+function modifyOperatorProperty (element) {
+  if (!operatorButtonEngaged) {
+    operatorButtonEngaged = true;
+    element.classList.add('operator-button-engaged');
+  } 
+  else if (isNaN(Number(previousButton))) {
+    console.log('prev elem:',previousElement)
+    previousElement.classList.remove('operator-button-engaged');
+    console.log('curr elem:', element);
+    element.classList.add('operator-button-engaged');
+  }
+}
+
+function assignAndOperate (event, element) {
+  if (display.textContent == 0 && event.key === '-') {
+    plusMinus = true;
+    num1 = 0;
+  } else if (num1 === '') {
+    num1 = Number(display.textContent);
+  } else if(num1 !== '') {
+    num2 = Number(display.textContent);
+  }
+  if (num2 !== '') {
+    if (!isNaN(Number(previousButton))) {
+      num1 = operate(num1, num2, operatorSelected);
+      display.textContent = num1;
+    }
+  }
+  operatorSelected = event.key;
+  previousButton = event.key;    
+  previousElement = element;
+}
+//Operator keys action
+document.addEventListener('keydown', (event) => {
+  switch (event.key) {
+    case '+':
+      modifyOperatorProperty(addKey);
+      assignAndOperate(event, addKey);
+      break;
+    
+    case '-':
+      modifyOperatorProperty(subtractKey);
+      assignAndOperate(event, subtractKey);
+      break;
+
+    case '*':
+      modifyOperatorProperty(multiplyKey);
+      assignAndOperate(event, multiplyKey);
+      break;  
+    
+    case '/':
+      modifyOperatorProperty(divideKey);
+      assignAndOperate(event, divideKey);
+      break; 
+  }
+});
+
+//Reset key action
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Backspace') {
+    if (operatorButtonEngaged) {
+      operatorButtonEngaged = false;
+      previousElement.classList.remove('operator-button-engaged');
+    }
+    if (resetButton.textContent === 'C' && display.textContent != 0) {
+      if (display.textContent.length === 1) {
+        display.textContent = 0;
+        return;
+      }
+      let modifyDisplay = display.textContent;
+      let modifiedDisplayArr = modifyDisplay.split('');
+      modifiedDisplayArr.pop();
+      display.textContent = modifiedDisplayArr.join('');
+    } else if (resetButton.textContent === 'C' && display.textContent == 0) {
+      resetButton.textContent = 'AC';
+      display.textContent = 0;
+      previousButton = '';
+      num1 = '';
+      num2 = '';
+      operatorSelected = '';
+    }
+  }
+});
+
+//Equal to key action
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' || event.key === '=') {
+    num2 = Number(display.textContent); 
+    if (num1 === '' && num2 === 0) {
+      display.textContent = 0;
+    } else if (num1 === '' && num2 !== 0) {
+      display.textContent = num2;
+    } else {
+      num1 = operate(num1, num2, operatorSelected);
+      display.textContent = num1;
+      num2 = '';
+    }
+  previousButton = equalsToButton.textContent;
+  }
+});
+
+//Plus/minus key action 
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'm' || event.key === 'M') {
+    if (plusMinus === false) {
+      display.textContent = '-' + display.textContent;
+      plusMinus = true;
+    } 
+    else if (plusMinus === true) {
+      display.textContent = display.textContent
+        .split('')
+        .toSpliced(0,1)
+        .join('');
+      plusMinus = false; 
+    }
+  }  
+});
+//Percentage key action
+document.addEventListener('keydown', (event) => {
+  if (event.key === '%') {
+    num1 = Number(display.textContent);
+    operatorSelected = percentageButton.textContent;
+    num1 = operate(num1, num2, operatorSelected);
+    display.textContent = num1;
+  }
 });
