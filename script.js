@@ -45,14 +45,14 @@ function operate(n1, n2, op) {
     }
 
     case '÷':
-      if (n2 === 0) {
+      if (n1 === 0) {
         return 'Error';
       } else {
       return Math.round((Number(n1) / Number(n2)) * 100000000) / 100000000;
       }
 
     case '/':
-      if (n2 === 0) {
+      if (n1 === 0) {
         return 'Error';
       } else {
       return Math.round((Number(n1) / Number(n2)) * 100000000) / 100000000;
