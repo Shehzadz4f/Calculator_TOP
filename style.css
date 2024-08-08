@@ -40,6 +40,11 @@ button {
   margin-top: 4px;
   font-size: 30px;
   cursor: pointer;
+  transition: background-color 0.5s;
+}
+
+button:active {
+  background-color: rgb(214, 214, 214);
 }
 
 #zero {
